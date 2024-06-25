@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript ハンズオン: はじめての電卓アプリ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        pre {
+            background-color: #f4f5f6;
+            padding: 1rem;
+            border-left: 0.3rem solid #9b4dca;
+            overflow-x: auto;
+        }
+
+        .demo-area {
+            background-color: #f4f5f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            margin-bottom: 2rem;
+            border: 1px solid #e1e1e1;
+            padding: 1rem;
+        }
+
+        .explanation {
+            background-color: #e1f5fe;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 0.3rem solid #03a9f4;
+        }
+
+        .main-title {
+            font-size: 3.6rem;
+            line-height: 1.2;
+            margin-bottom: 0;
+        }
+
+        .sub-title {
+            font-size: 2.4rem;
+            color: #606c76;
+            margin-top: 0.5rem;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+        }
+
+        h4 {
+            font-size: 1.6rem;
+        }
+
+        @media (max-width: 600px) {
+            .main-title {
+                font-size: 2.8rem;
+            }
+
+            .sub-title {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            h3 {
+                font-size: 1.6rem;
+            }
+
+            h4 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="main-title">JavaScript ハンズオン</h1>
+        <h2 class="sub-title">はじめての電卓アプリ</h2>
+
+        <section id="intro">
+            <h2>はじめに</h2>
+            <p>このハンズオンでは、JavaScriptを使って簡単な電卓アプリを作ります。順番に進めていけば、プログラミングが初めての人でも、JavaScriptの基本を学びながら、実際に動くアプリを作ることができます。
+            </p>
+        </section>
+
+        <section id="setup">
+            <h2>準備</h2>
+            <p>まず、テキストエディタ（メモ帳、VSCode、Sublimeなど）を用意しましょう。新しいHTMLファイルを作って、以下の内容をコピーしてください。</p>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;はじめての電卓アプリ&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;はじめての電卓アプリ&lt;/h1&gt;
+
+    &lt;script&gt;
+    // ここにJavaScriptのコードを書きます
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </section>
+
+        <section id="step1">
+            <h2>ステップ 1: 電卓の見た目を作る</h2>
+            <p>まず、電卓の基本的な見た目を作ります。次のコードを<code>&lt;h1&gt;</code>タグの下に追加してください。</p>
+            <pre><code>&lt;input type="number" id="num1" placeholder="数字1"&gt;
+&lt;input type="number" id="num2" placeholder="数字2"&gt;
+&lt;select id="operator"&gt;
+    &lt;option value="+"&gt;+&lt;/option&gt;
+    &lt;option value="-"&gt;-&lt;/option&gt;
+    &lt;option value="*"&gt;×&lt;/option&gt;
+    &lt;option value="/"&gt;÷&lt;/option&gt;
+&lt;/select&gt;
+&lt;button onclick="calculate()"&gt;計算する&lt;/button&gt;
+&lt;p id="result"&gt;&lt;/p&gt;</code></pre>
+        </section>
+
+        <section id="step2">
+            <h2>ステップ 2: 計算の機能を作る</h2>
+            <p>次に、計算を行う機能を作ります。以下のコードを<code>&lt;script&gt;</code>タグの中に書いてください。</p>
+            <pre><code>function calculate() {
+    // 入力された数字を取得する
+    const num1 = parseFloat(document.getElementById('num1').value);
+    const num2 = parseFloat(document.getElementById('num2').value);
+    const operator = document.getElementById('operator').value;
+    let result;
+
+    // 計算する
+    switch (operator) {
+        case '+':
+            result = num1 + num2;
+            break;
+        case '-':
+            result = num1 - num2;
+            break;
+        case '*':
+            result = num1 * num2;
+            break;
+        case '/':
+            result = num1 / num2;
+            break;
+    }
+
+    // 結果を表示する
+    document.getElementById('result').textContent = `計算結果: ${result}`;
+}</code></pre>
+        </section>
+
+        <section id="step3">
+            <h2>ステップ 3: JavaScriptの文法を理解しよう</h2>
+            <p>ステップ2で書いたJavaScriptのコードで使われている主な文法について説明します。</p>
+
+            <h3>1. 関数の定義</h3>
+            <pre><code>function calculate() { ... }</code></pre>
+            <p><code>function</code>という言葉を使って、<code>calculate</code>という名前の関数（命令のまとまり）を作ります。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Functions"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>2. 変数の作成</h3>
+            <pre><code>const num1 = parseFloat(document.getElementById('num1').value);</code></pre>
+            <p><code>const</code>を使って、値が変わらない変数を作ります。<code>let</code>を使うと、後で値を変えられる変数になります。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Grammar_and_types#%E5%A4%89%E6%95%B0"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>3. HTMLの要素を取得する</h3>
+            <pre><code>document.getElementById('num1')</code></pre>
+            <p><code>document.getElementById()</code>を使って、HTMLの中の特定の要素を探して取得します。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/Document/getElementById"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>4. 文字列を数字に変換する</h3>
+            <pre><code>parseFloat(document.getElementById('num1').value)</code></pre>
+            <p><code>parseFloat()</code>を使って、文字列（テキスト）を小数点のある数字に変換します。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/parseFloat"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>5. 条件によって処理を変える</h3>
+            <pre><code>switch (operator) {
+    case '+':
+        result = num1 + num2;
+        break;
+    // ...
+}</code></pre>
+            <p><code>switch</code>文を使って、条件（ここでは演算子）によって違う計算をします。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/switch"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>6. 文字列の中に変数を入れる</h3>
+            <pre><code>`計算結果: ${result}`</code></pre>
+            <p>バッククォート(`)で囲んだ文字列の中に、<code>${}</code>を使って変数の値を入れることができます。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Template_literals"
+                    target="_blank">もっと詳しく知る</a></p>
+        </section>
+
+        <section id="step4">
+            <h2>ステップ 4: 動作確認</h2>
+            <p>ここまでで、基本的な電卓の機能が完成しました。HTMLファイルをブラウザで開いて、以下の点を確認しましょう：</p>
+            <ul>
+                <li>2つの数値を入力し、演算子（+、-、×、÷）を選択して「計算する」ボタンをクリックすると、正しい結果が表示されるか</li>
+                <li>異なる演算子を選択した場合でも、適切に計算が行われるか</li>
+                <li>小数点を含む数値でも正確に計算できるか</li>
+            </ul>
+
+            <h3>完成した電卓アプリ</h3>
+            <p>以下は、ここまでのステップで作成した電卓アプリの完成版です。自身で実装したものと比較してみましょう。</p>
+            <p><strong>注意：</strong>この電卓アプリの見た目は、実行環境（ブラウザやCSSの設定）によって異なる場合があります。機能面での動作を中心に確認してください。</p>
+            <div class="demo-area">
+                <input type="number" id="demo-num1" placeholder="数値1">
+                <input type="number" id="demo-num2" placeholder="数値2">
+                <select id="demo-operator">
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                    <option value="*">×</option>
+                    <option value="/">÷</option>
+                </select>
+                <button onclick="demoCalculate()">計算する</button>
+                <p id="demo-result"></p>
+            </div>
+            <script>
+                function demoCalculate() {
+                    const num1 = parseFloat(document.getElementById('demo-num1').value);
+                    const num2 = parseFloat(document.getElementById('demo-num2').value);
+                    const operator = document.getElementById('demo-operator').value;
+                    let result;
+
+                    switch (operator) {
+                        case '+':
+                            result = num1 + num2;
+                            break;
+                        case '-':
+                            result = num1 - num2;
+                            break;
+                        case '*':
+                            result = num1 * num2;
+                            break;
+                        case '/':
+                            result = num1 / num2;
+                            break;
+                    }
+
+                    document.getElementById('demo-result').textContent = `計算結果: ${result}`;
+                }
+            </script>
+            <p>この完成版の電卓アプリを参考に、自身の実装を確認してください。正常に動作しない場合は、コードを見直し、必要に応じて修正を行ってください。</p>
+        </section>
+
+        <section id="challenge">
+            <h2>チャレンジ: もっと便利にしてみよう</h2>
+            <p>基本の機能ができたら、さらに便利な機能を追加してみましょう。例えば：</p>
+            <ol>
+                <li>
+                    <strong>入力チェック</strong>
+                    <p>例: 数字が入力されていない時や、0で割ろうとした時にエラーメッセージを表示する</p>
+                    <pre><code>if (isNaN(num1) || isNaN(num2)) {
+    alert("数字を入力してください");
+    return;
+}
+if (operator === '/' && num2 === 0) {
+    alert("0で割ることはできません");
+    return;
+}</code></pre>
+                </li>
+                <li>
+                    <strong>計算の履歴を表示する</strong>
+                    <p>計算結果を保存して、今までの計算結果のリストを表示する</p>
+                </li>
+                <li>
+                    <strong>新しい計算機能を追加する</strong>
+                    <p>べき乗（2の3乗 = 8）や平方根（√9 = 3）などの機能を追加する</p>
+                </li>
+            </ol>
+            <p>これらの機能を追加するには、どうすればいいでしょうか？自分で考えて挑戦してみましょう。</p>
+        </section>
+
+        <section id="conclusion">
+            <h2>まとめ</h2>
+            <p>このハンズオンで、JavaScriptの基本（変数、関数、条件分岐など）を学びながら、実際に動く電卓アプリを作りました。ここで学んだことを使って、もっと複雑なアプリを作る挑戦をしてみてください。</p>
+        </section>
+    </div>
+</body>
+
+</html>
