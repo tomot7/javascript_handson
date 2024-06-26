@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript ハンズオン: トップページ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8cmVjdCB4PSI1IiB5PSI1IiB3aWR0aD0iOTAiIGhlaWdodD0iOTAiIHJ4PSIxMCIgZmlsbD0iI2Y0ZjVmNiIgLz4KICA8cmVjdCB4PSIxNSIgeT0iMTUiIHdpZHRoPSI3MCIgaGVpZ2h0PSI1MCIgcng9IjUiIGZpbGw9IiM5YjRkY2EiIC8+CiAgPHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNjAiIGhlaWdodD0iNDAiIHJ4PSIzIiBmaWxsPSIjZmZmZmZmIiAvPgogIDxsaW5lIHgxPSIyNSIgeTE9IjMwIiB4Mj0iNTUiIHkyPSIzMCIgc3Ryb2tlPSIjOWI0ZGNhIiBzdHJva2Utd2lkdGg9IjMiIC8+CiAgPGxpbmUgeDE9IjI1IiB5MT0iNDAiIHgyPSI0NSIgeTI9IjQwIiBzdHJva2U9IiM5YjRkY2EiIHN0cm9rZS13aWR0aD0iMyIgLz4KICA8bGluZSB4MT0iMjUiIHkxPSI1MCIgeDI9IjUwIiB5Mj0iNTAiIHN0cm9rZT0iIzliNGRjYSIgc3Ryb2tlLXdpZHRoPSIzIiAvPgogIDxjaXJjbGUgY3g9IjMwIiBjeT0iODAiIHI9IjgiIGZpbGw9IiM5YjRkY2EiIC8+CiAgPGNpcmNsZSBjeD0iNTAiIGN5PSI4MCIgcj0iOCIgZmlsbD0iIzliNGRjYSIgLz4KICA8Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSI4IiBmaWxsPSIjOWI0ZGNhIiAvPgo8L3N2Zz4=">
+    <style>
+        body {
+            padding: 20px;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .main-title {
+            font-size: 3.6rem;
+            line-height: 1.2;
+            margin-bottom: 0;
+        }
+
+        .sub-title {
+            font-size: 2.4rem;
+            color: #606c76;
+            margin-top: 0.5rem;
+        }
+
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .github-link {
+            font-size: 1.6rem;
+            text-decoration: none;
+            color: #9b4dca;
+        }
+
+        .handson-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .handson-item {
+            background-color: #f4f5f6;
+            border-left: 0.3rem solid #9b4dca;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .handson-link {
+            display: inline-block;
+            background-color: #9b4dca;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 0.3rem;
+        }
+
+        .handson-link:hover {
+            background-color: #7534a0;
+        }
+
+        footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e1e1e1;
+            text-align: center;
+            font-size: 1rem;
+            color: #606c76;
+        }
+
+        footer a {
+            color: #9b4dca;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+
+            .main-title {
+                font-size: 2.8rem;
+            }
+
+            .sub-title {
+                font-size: 2rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .github-link {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">JavaScript ハンズオン</h1>
+            <a href="https://github.com/tomot7/javascript_handson" class="github-link" target="_blank">GitHub</a>
+        </div>
+        <h2 class="sub-title">初心者のためのインタラクティブな学習体験</h2>
+
+        <section id="usage">
+            <h2>利用方法</h2>
+            <p>本ハンズオンの文章、ソースコードを含むあらゆる内容は、自由にご利用いただけます。個人の学習や、グループ・会社での勉強会、もくもく会、セミナーなど、あらゆる用途にご活用ください。</p>
+        </section>
+
+        <section id="handson-list">
+            <h2>利用可能なハンズオン</h2>
+            <ul class="handson-list">
+                <li class="handson-item">
+                    <h3>はじめての電卓アプリ</h3>
+                    <p>基本的な四則演算を行う電卓アプリを作成します。</p>
+                    <a href="create-web-calculator.html" class="handson-link">開始する</a>
+                </li>
+            </ul>
+            <p>その他のハンズオン（TODOリストアプリ、天気予報アプリなど）は鋭意制作中です。</p>
+        </section>
+
+        <footer>
+            <p>© 2024 <a href="https://github.com/tomot7" target="_blank">tomot7</a>. このサイトのコンテンツは、特に明記されていない限り、<a
+                    href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA
+                    4.0</a>ライセンスの下で提供されています。</p>
+        </footer>
+    </div>
+</body>
+
+</html>

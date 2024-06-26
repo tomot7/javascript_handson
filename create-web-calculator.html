@@ -74,6 +74,18 @@
             align-items: center;
         }
 
+        .header-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 1.6rem;
+            text-decoration: none;
+            color: #9b4dca;
+            margin-right: 1.5rem;
+        }
+
         .github-link {
             font-size: 1.6rem;
             text-decoration: none;
@@ -100,6 +112,15 @@
             h4 {
                 font-size: 1.4rem;
             }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-links {
+                margin-top: 1rem;
+            }
         }
     </style>
 </head>
@@ -108,7 +129,10 @@
     <div class="container">
         <div class="header">
             <h1 class="main-title">JavaScript ハンズオン</h1>
-            <a href="https://github.com/tomot7/javascript_handson" class="github-link" target="_blank">GitHub</a>
+            <div class="header-links">
+                <a href="index.html" class="nav-link">トップページ</a>
+                <a href="https://github.com/tomot7/javascript_handson" class="github-link" target="_blank">GitHub</a>
+            </div>
         </div>
         <h2 class="sub-title">はじめての電卓アプリ</h2>
 
