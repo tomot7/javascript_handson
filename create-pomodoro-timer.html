@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript ハンズオン: はじめてのポモドーロタイマー</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8cmVjdCB4PSI1IiB5PSI1IiB3aWR0aD0iOTAiIGhlaWdodD0iOTAiIHJ4PSIxMCIgZmlsbD0iI2Y0ZjVmNiIgLz4KICA8cmVjdCB4PSIxNSIgeT0iMTUiIHdpZHRoPSI3MCIgaGVpZ2h0PSI1MCIgcng9IjUiIGZpbGw9IiM5YjRkY2EiIC8+CiAgPHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNjAiIGhlaWdodD0iNDAiIHJ4PSIzIiBmaWxsPSIjZmZmZmZmIiAvPgogIDxsaW5lIHgxPSIyNSIgeTE9IjMwIiB4Mj0iNTUiIHkyPSIzMCIgc3Ryb2tlPSIjOWI0ZGNhIiBzdHJva2Utd2lkdGg9IjMiIC8+CiAgPGxpbmUgeDE9IjI1IiB5MT0iNDAiIHgyPSI0NSIgeTI9IjQwIiBzdHJva2U9IiM5YjRkY2EiIHN0cm9rZS13aWR0aD0iMyIgLz4KICA8bGluZSB4MT0iMjUiIHkxPSI1MCIgeDI9IjUwIiB5Mj0iNTAiIHN0cm9rZT0iIzliNGRjYSIgc3Ryb2tlLXdpZHRoPSIzIiAvPgogIDxjaXJjbGUgY3g9IjMwIiBjeT0iODAiIHI9IjgiIGZpbGw9IiM5YjRkY2EiIC8+CiAgPGNpcmNsZSBjeD0iNTAiIGN5PSI4MCIgcj0iOCIgZmlsbD0iIzliNGRjYSIgLz4KICA8Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSI4IiBmaWxsPSIjOWI0ZGNhIiAvPgo8L3N2Zz4=">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        pre {
+            background-color: #f4f5f6;
+            padding: 1rem;
+            border-left: 0.3rem solid #9b4dca;
+            overflow-x: auto;
+        }
+
+        .demo-area {
+            background-color: #f4f5f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            margin-bottom: 2rem;
+            border: 1px solid #e1e1e1;
+            padding: 1rem;
+        }
+
+        .explanation {
+            background-color: #e1f5fe;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 0.3rem solid #03a9f4;
+        }
+
+        .main-title {
+            font-size: 3.6rem;
+            line-height: 1.2;
+            margin-bottom: 0;
+        }
+
+        .sub-title {
+            font-size: 2.4rem;
+            color: #606c76;
+            margin-top: 0.5rem;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+        }
+
+        h4 {
+            font-size: 1.6rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 1.6rem;
+            text-decoration: none;
+            color: #9b4dca;
+            margin-right: 1.5rem;
+        }
+
+        .github-link {
+            font-size: 1.6rem;
+            text-decoration: none;
+            color: #9b4dca;
+        }
+
+        @media (max-width: 600px) {
+            .main-title {
+                font-size: 2.8rem;
+            }
+
+            .sub-title {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            h3 {
+                font-size: 1.6rem;
+            }
+
+            h4 {
+                font-size: 1.4rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-links {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">JavaScript ハンズオン</h1>
+            <div class="header-links">
+                <a href="index.html" class="nav-link">トップページ</a>
+                <a href="https://github.com/tomot7/javascript_handson" class="github-link" target="_blank">GitHub</a>
+            </div>
+        </div>
+        <h2 class="sub-title">はじめてのポモドーロタイマー</h2>
+
+        <section id="intro">
+            <h2>はじめに</h2>
+            <p>このハンズオンでは、JavaScriptを使って簡単なポモドーロタイマーアプリを作ります。順番に進めていけば、プログラミングが初めての人でも、JavaScriptの基本を学びながら、実際に動くアプリを作ることができます。
+            </p>
+            <h3>ポモドーロテクニックとは？</h3>
+            <p>ポモドーロテクニックは、時間管理法の一つです。通常、以下のステップで行います：</p>
+            <ol>
+                <li>タイマーを25分にセットする</li>
+                <li>集中して作業する</li>
+                <li>タイマーが鳴ったら、5分間の短い休憩を取る</li>
+                <li>これを4回繰り返したら、15-30分の長めの休憩を取る</li>
+            </ol>
+            <p>この方法は、集中力を維持しながら効率的に作業を進めるのに役立ちます。</p>
+        </section>
+
+        <section id="setup">
+            <h2>準備</h2>
+            <p>まず、テキストエディタ（メモ帳、VSCode、Sublimeなど）を用意しましょう。新しいHTMLファイルを作って、以下の内容をコピーしてください。</p>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;はじめてのポモドーロタイマー&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;はじめてのポモドーロタイマー&lt;/h1&gt;
+
+    &lt;script&gt;
+    // ここにJavaScriptのコードを書きます
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </section>
+
+        <section id="step1">
+            <h2>ステップ 1: タイマーの見た目を作る</h2>
+            <p>まず、ポモドーロタイマーの基本的な見た目を作ります。次のコードを<code>&lt;h1&gt;</code>タグの下に追加してください。</p>
+            <pre><code>&lt;div id="timer"&gt;01:00&lt;/div&gt;
+&lt;button id="startButton"&gt;スタート&lt;/button&gt;
+&lt;button id="resetButton"&gt;リセット&lt;/button&gt;</code></pre>
+        </section>
+
+        <section id="step2">
+            <h2>ステップ 2: タイマーの機能を作る</h2>
+            <p>次に、タイマーの機能を作ります。以下のコードを<code>&lt;script&gt;</code>タグの中に書いてください。</p>
+            <pre><code>let timer;
+let timeLeft = 60; // 1分 = 60秒
+
+function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById('timer').textContent =
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function startTimer() {
+    timer = setInterval(() => {
+        if (timeLeft > 0) {
+            timeLeft--;
+            updateTimer();
+        } else {
+            clearInterval(timer);
+            alert('ポモドーロ終了！');
+        }
+    }, 1000);
+}
+
+function resetTimer() {
+    clearInterval(timer);
+    timeLeft = 60;
+    updateTimer();
+}
+
+document.getElementById('startButton').addEventListener('click', startTimer);
+document.getElementById('resetButton').addEventListener('click', resetTimer);
+
+updateTimer(); // 初期表示</code></pre>
+            <p><strong>注意：</strong>このサンプルコードでは、動作確認を容易にするために1分のタイマーを使用しています。実際のポモドーロテクニックでは、通常25分の作業時間を設定します。実際のアプリケーションでは、必要に応じて時間を調整してください。
+            </p>
+        </section>
+
+        <section id="step3">
+            <h2>ステップ 3: JavaScriptの文法を理解しよう</h2>
+            <p>ステップ2で書いたJavaScriptのコードで使われている主な文法について説明します。</p>
+
+            <h3>1. 変数の宣言</h3>
+            <pre><code>let timer;
+let timeLeft = 60;</code></pre>
+            <p><code>let</code>を使って、後で値を変更できる変数を作ります。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/let"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>2. 関数の定義</h3>
+            <pre><code>function updateTimer() { ... }</code></pre>
+            <p><code>function</code>という言葉を使って、<code>updateTimer</code>という名前の関数（命令のまとまり）を作ります。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Functions"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>3. テンプレートリテラル</h3>
+            <pre><code>`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`</code></pre>
+            <p>バッククォート(`)で囲んだ文字列の中に、<code>${}</code>を使って変数の値を埋め込むことができます。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Template_literals"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>4. アロー関数</h3>
+            <pre><code>() => {
+    if (timeLeft > 0) {
+        timeLeft--;
+        updateTimer();
+    } else {
+        clearInterval(timer);
+        alert('ポモドーロ終了！');
+    }
+}</code></pre>
+            <p><code>() =></code>を使って、短い関数を簡潔に書くことができます。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Functions/Arrow_functions"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>5. setInterval関数</h3>
+            <pre><code>timer = setInterval(() => { ... }, 1000);</code></pre>
+            <p><code>setInterval</code>を使って、一定の間隔（ここでは1000ミリ秒=1秒）で繰り返し処理を行います。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/setInterval" target="_blank">もっと詳しく知る</a></p>
+
+            <h3>6. イベントリスナーの追加</h3>
+            <pre><code>document.getElementById('startButton').addEventListener('click', startTimer);</code></pre>
+            <p><code>addEventListener</code>を使って、ボタンがクリックされたときに実行する関数を指定します。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/EventTarget/addEventListener"
+                    target="_blank">もっと詳しく知る</a></p>
+        </section>
+
+        <section id="step4">
+            <h2>ステップ 4: 動作確認</h2>
+            <p>ここまでで、基本的なポモドーロタイマーの機能が完成しました。HTMLファイルをブラウザで開いて、以下の点を確認しましょう：</p>
+            <ul>
+                <li>「スタート」ボタンをクリックすると、タイマーが01:00から減少を始めるか</li>
+                <li>1秒ごとに正確にカウントダウンされるか</li>
+                <li>「リセット」ボタンをクリックすると、タイマーが01:00にリセットされるか</li>
+                <li>タイマーが0:00になったとき（00:01から00:00に変わった瞬間）、アラートが表示されるか</li>
+            </ul>
+
+            <h3>完成したポモドーロタイマーアプリ</h3>
+            <p>以下は、ここまでのステップで作成したポモドーロタイマーアプリの完成版です。自身で実装したものと比較してみましょう。</p>
+            <p><strong>注意：</strong>このデモでは、実際のポモドーロテクニックで使用される25分ではなく、動作確認がしやすいように1分に設定しています。実際のアプリケーションでは、必要に応じて時間を調整してください。
+            </p>
+            <div class="demo-area">
+                <div id="demo-timer">01:00</div>
+                <button id="demo-startButton">スタート</button>
+                <button id="demo-resetButton">リセット</button>
+            </div>
+            <script>
+                let demoTimer;
+                let demoTimeLeft = 60; // 1分 = 60秒
+
+                function demoUpdateTimer() {
+                    const minutes = Math.floor(demoTimeLeft / 60);
+                    const seconds = demoTimeLeft % 60;
+                    document.getElementById('demo-timer').textContent =
+                        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+
+                function demoStartTimer() {
+                    demoTimer = setInterval(() => {
+                        if (demoTimeLeft > 0) {
+                            demoTimeLeft--;
+                            demoUpdateTimer();
+                        } else {
+                            clearInterval(demoTimer);
+                            alert('ポモドーロ終了！');
+                        }
+                    }, 1000);
+                }
+
+                function demoResetTimer() {
+                    clearInterval(demoTimer);
+                    demoTimeLeft = 60;
+                    demoUpdateTimer();
+                }
+
+                document.getElementById('demo-startButton').addEventListener('click', demoStartTimer);
+                document.getElementById('demo-resetButton').addEventListener('click', demoResetTimer);
+
+                demoUpdateTimer(); // 初期表示
+            </script>
+        </section>
+
+        <section id="challenge">
+            <h2>チャレンジ: もっと便利にしてみよう</h2>
+            <p>基本の機能ができたら、さらに便利な機能を追加してみましょう。例えば：</p>
+            <ol>
+                <li>
+                    <strong>一時停止機能</strong>
+                    <p>タイマーを一時停止できるボタンを追加する</p>
+                    <pre><code>function pauseTimer() {
+    clearInterval(timer);
+}
+
+document.getElementById('pauseButton').addEventListener('click', pauseTimer);</code></pre>
+                </li>
+                <li>
+                    <strong>作業時間と休憩時間の切り替え</strong>
+                    <p>25分の作業時間が終わったら、5分の休憩時間に自動的に切り替わるようにする</p>
+                </li>
+                <li>
+                    <strong>カスタマイズ機能</strong>
+                    <p>ユーザーが作業時間と休憩時間を設定できるようにする</p>
+                </li>
+            </ol>
+            <p>これらの機能を追加するには、どうすればいいでしょうか？自分で考えて挑戦してみましょう。</p>
+        </section>
+
+        <section id="conclusion">
+            <h2>まとめ</h2>
+            <p>このハンズオンで、JavaScriptの基本（変数、関数、タイマー処理など）を学びながら、実際に動くポモドーロタイマーアプリを作りました。ここで学んだことを使って、もっと複雑なアプリを作る挑戦をしてみてください。
+            </p>
+        </section>
+    </div>
+</body>
+
+</html>
