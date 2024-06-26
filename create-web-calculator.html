@@ -66,6 +66,18 @@
             font-size: 1.6rem;
         }
 
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .github-link {
+            font-size: 1.6rem;
+            text-decoration: none;
+            color: #9b4dca;
+        }
+
         @media (max-width: 600px) {
             .main-title {
                 font-size: 2.8rem;
@@ -92,7 +104,10 @@
 
 <body>
     <div class="container">
-        <h1 class="main-title">JavaScript ハンズオン</h1>
+        <div class="header">
+            <h1 class="main-title">JavaScript ハンズオン</h1>
+            <a href="https://github.com/tomot7/javascript_handson" class="github-link" target="_blank">GitHub</a>
+        </div>
         <h2 class="sub-title">はじめての電卓アプリ</h2>
 
         <section id="intro">
