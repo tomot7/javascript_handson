@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript ハンズオン: はじめてのメモ帳アプリ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8cmVjdCB4PSI1IiB5PSI1IiB3aWR0aD0iOTAiIGhlaWdodD0iOTAiIHJ4PSIxMCIgZmlsbD0iI2Y0ZjVmNiIgLz4KICA8cmVjdCB4PSIxNSIgeT0iMTUiIHdpZHRoPSI3MCIgaGVpZ2h0PSI1MCIgcng9IjUiIGZpbGw9IiM5YjRkY2EiIC8+CiAgPHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNjAiIGhlaWdodD0iNDAiIHJ4PSIzIiBmaWxsPSIjZmZmZmZmIiAvPgogIDxsaW5lIHgxPSIyNSIgeTE9IjMwIiB4Mj0iNTUiIHkyPSIzMCIgc3Ryb2tlPSIjOWI0ZGNhIiBzdHJva2Utd2lkdGg9IjMiIC8+CiAgPGxpbmUgeDE9IjI1IiB5MT0iNDAiIHgyPSI0NSIgeTI9IjQwIiBzdHJva2U9IiM5YjRkY2EiIHN0cm9rZS13aWR0aD0iMyIgLz4KICA8bGluZSB4MT0iMjUiIHkxPSI1MCIgeDI9IjUwIiB5Mj0iNTAiIHN0cm9rZT0iIzliNGRjYSIgc3Ryb2tlLXdpZHRoPSIzIiAvPgogIDxjaXJjbGUgY3g9IjMwIiBjeT0iODAiIHI9IjgiIGZpbGw9IiM5YjRkY2EiIC8+CiAgPGNpcmNsZSBjeD0iNTAiIGN5PSI4MCIgcj0iOCIgZmlsbD0iIzliNGRjYSIgLz4KICA8Y2lyY2xlIGN4PSI3MCIgY3k9IjgwIiByPSI4IiBmaWxsPSIjOWI0ZGNhIiAvPgo8L3N2Zz4=">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        pre {
+            background-color: #f4f5f6;
+            padding: 1rem;
+            border-left: 0.3rem solid #9b4dca;
+            overflow-x: auto;
+        }
+
+        .demo-area {
+            background-color: #f4f5f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            margin-bottom: 2rem;
+            border: 1px solid #e1e1e1;
+            padding: 1rem;
+        }
+
+        .explanation {
+            background-color: #e1f5fe;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 0.3rem solid #03a9f4;
+        }
+
+        .main-title {
+            font-size: 3.6rem;
+            line-height: 1.2;
+            margin-bottom: 0;
+        }
+
+        .sub-title {
+            font-size: 2.4rem;
+            color: #606c76;
+            margin-top: 0.5rem;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+        }
+
+        h4 {
+            font-size: 1.6rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 1.6rem;
+            text-decoration: none;
+            color: #9b4dca;
+            margin-right: 1.5rem;
+        }
+
+        .github-link {
+            font-size: 1.6rem;
+            text-decoration: none;
+            color: #9b4dca;
+        }
+
+        @media (max-width: 600px) {
+            .main-title {
+                font-size: 2.8rem;
+            }
+
+            .sub-title {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            h3 {
+                font-size: 1.6rem;
+            }
+
+            h4 {
+                font-size: 1.4rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-links {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">JavaScript ハンズオン</h1>
+            <div class="header-links">
+                <a href="index.html" class="nav-link">トップページ</a>
+                <a href="https://github.com/tomot7/javascript_handson" class="github-link" target="_blank">GitHub</a>
+            </div>
+        </div>
+        <h2 class="sub-title">はじめてのメモ帳アプリ</h2>
+
+        <section id="intro">
+            <h2>はじめに</h2>
+            <p>このハンズオンでは、JavaScriptを使って簡単なメモ帳アプリを作ります。順番に進めていけば、プログラミングが初めての人でも、JavaScriptの基本を学びながら、実際に動くアプリを作ることができます。
+            </p>
+        </section>
+
+        <section id="setup">
+            <h2>準備</h2>
+            <p>まず、テキストエディタ（メモ帳、VSCode、Sublimeなど）を用意しましょう。新しいHTMLファイルを作って、以下の内容をコピーしてください。</p>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;はじめてのメモ帳アプリ&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;はじめてのメモ帳アプリ&lt;/h1&gt;
+
+    &lt;script&gt;
+    // ここにJavaScriptのコードを書きます
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </section>
+
+        <section id="step1">
+            <h2>ステップ 1: メモ帳の見た目を作る</h2>
+            <p>まず、メモ帳の基本的な見た目を作ります。次のコードを<code>&lt;h1&gt;</code>タグの下に追加してください。</p>
+            <pre><code>&lt;textarea id="memo" rows="10" cols="50" placeholder="ここにメモを入力してください"&gt;&lt;/textarea&gt;
+&lt;br&gt;
+&lt;button onclick="saveMemo()"&gt;保存&lt;/button&gt;
+&lt;button onclick="loadMemo()"&gt;読み込み&lt;/button&gt;
+&lt;button onclick="clearMemo()"&gt;クリア&lt;/button&gt;</code></pre>
+        </section>
+
+        <section id="step2">
+            <h2>ステップ 2: メモの機能を作る</h2>
+            <p>次に、メモの保存、読み込み、クリアの機能を作ります。以下のコードを<code>&lt;script&gt;</code>タグの中に書いてください。</p>
+            <pre><code>function saveMemo() {
+    const memo = document.getElementById('memo').value;
+    localStorage.setItem('savedMemo', memo);
+    alert('メモを保存しました！');
+}
+
+function loadMemo() {
+    const savedMemo = localStorage.getItem('savedMemo');
+    if (savedMemo) {
+        document.getElementById('memo').value = savedMemo;
+        setTimeout(() => {
+            alert('メモを読み込みました！');
+        }, 10);
+    } else {
+        alert('保存されたメモはありません。');
+    }
+}
+
+function clearMemo() {
+    document.getElementById('memo').value = '';
+    // テキストエリアの内容が更新される時間を確保するために、
+    // わずかな遅延を設けてアラートを表示します
+    setTimeout(() => {
+        alert('メモをクリアしました！');
+    }, 10);
+}</code></pre>
+        </section>
+
+        <section id="step3">
+            <h2>ステップ 3: JavaScriptの文法を理解しよう</h2>
+            <p>ステップ2で書いたJavaScriptのコードで使われている主な文法について説明します。</p>
+
+            <h3>1. 関数の定義</h3>
+            <pre><code>function saveMemo() { ... }</code></pre>
+            <p><code>function</code>という言葉を使って、<code>saveMemo</code>という名前の関数（命令のまとまり）を作ります。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Functions"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>2. HTMLの要素を取得する</h3>
+            <pre><code>document.getElementById('memo')</code></pre>
+            <p><code>document.getElementById()</code>を使って、HTMLの中の特定の要素を探して取得します。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/Document/getElementById"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>3. ローカルストレージの使用</h3>
+            <pre><code>localStorage.setItem('savedMemo', memo);</code></pre>
+            <p><code>localStorage</code>を使って、ブラウザにデータを保存します。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/Window/localStorage" target="_blank">もっと詳しく知る</a>
+            </p>
+
+            <h3>4. 条件分岐</h3>
+            <pre><code>if (savedMemo) {
+    // ...
+} else {
+    // ...
+}</code></pre>
+            <p><code>if-else</code>文を使って、条件によって処理を変えます。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/if...else"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>5. アラートの表示</h3>
+            <pre><code>alert('メモを保存しました！');</code></pre>
+            <p><code>alert()</code>関数を使って、ポップアップメッセージを表示します。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/Window/alert" target="_blank">もっと詳しく知る</a></p>
+
+            <h3>6. タイマーの使用</h3>
+            <pre><code>setTimeout(() => {
+    alert('メモを読み込みました！');
+}, 10);</code></pre>
+            <p><code>setTimeout()</code>関数を使って、指定した時間（ミリ秒）後に処理を実行します。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/setTimeout" target="_blank">もっと詳しく知る</a></p>
+
+            <h3>7. 同じパターンの再利用</h3>
+            <pre><code>setTimeout(() => {
+    alert('メモをクリアしました！');
+}, 10);</code></pre>
+            <p>loadMemo 関数で使用したのと同じ setTimeout のパターンを clearMemo 関数でも使用しています。コードの一貫性を保つことで、理解しやすく、保守しやすいプログラムになります。</p>
+        </section>
+
+        <section id="step4">
+            <h2>ステップ 4: 動作確認</h2>
+            <p>ここまでで、基本的なメモ帳の機能が完成しました。HTMLファイルをブラウザで開いて、以下の点を確認しましょう：</p>
+            <ul>
+                <li>テキストエリアにメモを入力し、「保存」ボタンをクリックすると以下の動作が行われるか：
+                    <ol>
+                        <li>「メモを保存しました！」というアラートが表示される</li>
+                        <li>アラートを閉じた後、ページを更新する</li>
+                        <li>ページ更新後、「読み込み」ボタンをクリックすると、先ほど保存したメモの内容が表示される</li>
+                    </ol>
+                </li>
+                <li>「読み込み」ボタンをクリックすると、保存したメモが表示されるか：
+                    <ol>
+                        <li>テキストエリアに保存したメモの内容が表示される</li>
+                        <li>その後、「メモを読み込みました！」というアラートが表示される</li>
+                    </ol>
+                </li>
+                <li>「クリア」ボタンをクリックすると、以下の順序で動作するか：
+                    <ol>
+                        <li>テキストエリアの内容が消える</li>
+                        <li>その後、「メモをクリアしました！」というアラートが表示される</li>
+                    </ol>
+                </li>
+            </ul>
+
+            <h3>完成したメモ帳アプリ</h3>
+            <p><strong>注意：</strong>このメモ帳アプリの見た目は、実行環境（ブラウザやCSSの設定）によって異なる場合があります。機能面での動作を中心に確認してください。</p>
+            <p>以下は、ここまでのステップで作成したメモ帳アプリの完成版です。自身で実装したものと比較してみましょう。</p>
+            <div class="demo-area">
+                <textarea id="demo-memo" rows="10" cols="50" placeholder="ここにメモを入力してください"></textarea>
+                <br>
+                <button onclick="demoSaveMemo()">保存</button>
+                <button onclick="demoLoadMemo()">読み込み</button>
+                <button onclick="demoClearMemo()">クリア</button>
+            </div>
+            <script>
+                function demoSaveMemo() {
+                    const memo = document.getElementById('demo-memo').value;
+                    localStorage.setItem('demoSavedMemo', memo);
+                    alert('メモを保存しました！');
+                }
+
+                function demoLoadMemo() {
+                    const savedMemo = localStorage.getItem('demoSavedMemo');
+                    if (savedMemo) {
+                        document.getElementById('demo-memo').value = savedMemo;
+                        setTimeout(() => {
+                            alert('メモを読み込みました！');
+                        }, 10);
+                    } else {
+                        alert('保存されたメモはありません。');
+                    }
+                }
+
+                function demoClearMemo() {
+                    document.getElementById('demo-memo').value = '';
+                    setTimeout(() => {
+                        alert('メモをクリアしました！');
+                    }, 10);
+                }
+            </script>
+            <p>この完成版のメモ帳アプリを参考に、自身の実装を確認してください。正常に動作しない場合は、コードを見直し、必要に応じて修正を行ってください。</p>
+        </section>
+
+        <section id="challenge">
+            <h2>チャレンジ: もっと便利にしてみよう</h2>
+            <p>基本の機能ができたら、さらに便利な機能を追加してみましょう。例えば：</p>
+            <ol>
+                <li>
+                    <strong>複数のメモを保存する</strong>
+                    <p>タイトルをつけて複数のメモを保存し、リストから選んで読み込める機能を追加する</p>
+                </li>
+                <li>
+                    <strong>自動保存機能</strong>
+                    <p>一定時間ごと、または入力のたびに自動的にメモを保存する機能を追加する</p>
+                </li>
+                <li>
+                    <strong>テキスト装飾</strong>
+                    <p>太字、斜体、下線などの簡単なテキスト装飾機能を追加する</p>
+                </li>
+            </ol>
+            <p>これらの機能を追加するには、どうすればいいでしょうか？自分で考えて挑戦してみましょう。</p>
+        </section>
+
+        <section id="conclusion">
+            <h2>まとめ</h2>
+            <p>このハンズオンで、JavaScriptの基本（関数、DOM操作、ローカルストレージの使用など）を学びながら、実際に動くメモ帳アプリを作りました。さらに、非同期処理（setTimeout）を使ってユーザー体験を向上させる方法も学びました。ここで学んだことを使って、もっと複雑なアプリを作る挑戦をしてみてください。
+            </p>
+        </section>
+    </div>
+</body>
+
+</html>
