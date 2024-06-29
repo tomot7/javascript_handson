@@ -248,23 +248,22 @@ canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', stopDrawing);
 canvas.addEventListener('mouseout', stopDrawing);
 
-canvas.addEventListener('touchstart', handleStart);
-canvas.addEventListener('touchend', handleEnd);
-canvas.addEventListener('touchmove', handleMove);
+canvas.addEventListener('touchstart', handleStart, { passive: false });
+canvas.addEventListener('touchend', handleEnd, { passive: true });
+canvas.addEventListener('touchmove', handleMove, { passive: false });
 
 function handleStart(e) {
-    e.preventDefault();
+    e.preventDefault(); // キャンバス内でのみpreventDefaultを呼び出す
     const touch = e.touches[0];
     startDrawing(touch);
 }
 
 function handleEnd(e) {
-    e.preventDefault();
     stopDrawing();
 }
 
 function handleMove(e) {
-    e.preventDefault();
+    e.preventDefault(); // キャンバス内でのみpreventDefaultを呼び出す
     const touch = e.touches[0];
     draw(touch);
 }
@@ -291,9 +290,9 @@ canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', stopDrawing);
 canvas.addEventListener('mouseout', stopDrawing);
 
-canvas.addEventListener('touchstart', handleStart);
-canvas.addEventListener('touchend', handleEnd);
-canvas.addEventListener('touchmove', handleMove);</code></pre>
+canvas.addEventListener('touchstart', handleStart, { passive: false });
+canvas.addEventListener('touchend', handleEnd, { passive: true });
+canvas.addEventListener('touchmove', handleMove, { passive: false });</code></pre>
             <p>マウスとタッチの動きに応じて適切な関数を呼び出すようにイベントリスナーを設定します。</p>
             <p><a href="https://developer.mozilla.org/ja/docs/Web/API/EventTarget/addEventListener"
                     target="_blank">もっと詳しく知る</a></p>
@@ -328,27 +327,23 @@ canvas.addEventListener('touchmove', handleMove);</code></pre>
                     target="_blank">もっと詳しく知る</a></p>
 
             <h3>5. タッチイベントの処理</h3>
-            <pre><code>canvas.addEventListener('touchstart', handleStart);
-                canvas.addEventListener('touchend', handleEnd);
-                canvas.addEventListener('touchmove', handleMove);
+            <pre><code>function handleStart(e) {
+    e.preventDefault(); // キャンバス内でのみpreventDefaultを呼び出す
+    const touch = e.touches[0];
+    startDrawing(touch);
+}
 
-                function handleStart(e) {
-                    e.preventDefault();
-                    const touch = e.touches[0];
-                    startDrawing(touch);
-                }
+function handleEnd(e) {
+    stopDrawing();
+}
 
-                function handleEnd(e) {
-                    e.preventDefault();
-                    stopDrawing();
-                }
-
-                function handleMove(e) {
-                    e.preventDefault();
-                    const touch = e.touches[0];
-                    draw(touch);
-                }</code></pre>
-            <p>タッチデバイス（スマートフォンやタブレット）での描画をサポートするために、タッチイベントリスナーを追加しています。これにより、指で画面に触れて描画することができます。</p>
+function handleMove(e) {
+    e.preventDefault(); // キャンバス内でのみpreventDefaultを呼び出す
+    const touch = e.touches[0];
+    draw(touch);
+}</code></pre>
+            <p>タッチデバイス（スマートフォンやタブレット）での描画をサポートするために、タッチイベントリスナーを追加しています。<code>preventDefault()</code>メソッドはキャンバス内のタッチイベントでのみ呼び出されるため、ページのスクロールは通常通り機能します。
+            </p>
             <p><a href="https://developer.mozilla.org/ja/docs/Web/API/Touch_events" target="_blank">もっと詳しく知る</a></p>
         </section>
 
@@ -357,16 +352,15 @@ canvas.addEventListener('touchmove', handleMove);</code></pre>
             <p>ここまでで、基本的なお絵描きアプリの機能が完成しました。HTMLファイルをブラウザで開いて、以下の点を確認しましょう：</p>
             <ul>
                 <li>マウスをクリックしたままドラッグすると、線が描けるか</li>
+                <li>スマートフォンやタブレットで指でタッチしたまま動かすと、線が描けるか</li>
                 <li>色を変更すると、描画される線の色が変わるか</li>
                 <li>ブラシサイズを変更すると、線の太さが変わるか</li>
                 <li>「クリア」ボタンをクリックすると、キャンバスがクリアされるか</li>
-                <li><strong>スマートフォンやタブレットで指でタッチしたまま動かすと、線が描けるか</strong></li>
-                <li><strong>スマートフォンやタブレットでも、色の変更やブラシサイズの調整、クリア機能が正しく動作するか</strong></li>
+                <li>スマートフォンやタブレットで、キャンバス外の領域をスクロールできるか</li>
             </ul>
 
             <h3>完成したお絵描きアプリ</h3>
-            <p><strong>注意：</strong>このお絵描きアプリの見た目は、実行環境（ブラウザやCSSの設定）によって異なる場合があります。機能面での動作を中心に確認してください。特に、スマートフォンやタブレットでの動作確認も忘れずに行ってください。
-            </p>
+            <p><strong>注意：</strong>このお絵描きアプリの見た目は、実行環境（ブラウザやCSSの設定）によって異なる場合があります。機能面での動作を中心に確認してください。</p>
             <p>以下は、ここまでのステップで作成したお絵描きアプリの完成版です。自身で実装したものと比較してみましょう。</p>
             <div class="demo-area">
                 <canvas id="demo-drawingCanvas"></canvas>
@@ -443,15 +437,14 @@ canvas.addEventListener('touchmove', handleMove);</code></pre>
                 demoCanvas.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     demoStartDrawing(e.touches[0]);
-                });
+                }, { passive: false });
                 demoCanvas.addEventListener('touchmove', (e) => {
                     e.preventDefault();
                     demoDraw(e.touches[0]);
-                });
+                }, { passive: false });
                 demoCanvas.addEventListener('touchend', (e) => {
-                    e.preventDefault();
                     demoStopDrawing();
-                });
+                }, { passive: true });
 
                 demoClearButton.addEventListener('click', demoClearCanvas);
             </script>
@@ -464,13 +457,15 @@ canvas.addEventListener('touchmove', handleMove);</code></pre>
             <ul>
                 <li>スマートフォンやタブレットでは、指でキャンバスに触れることで描画できます。</li>
                 <li>タッチ操作での描画は、マウス操作と同様に滑らかに行えるはずです。</li>
-                <li>ピンチズームが無効化されているため、描画中に画面が拡大縮小されることはありません。</li>
+                <li>キャンバス外の領域では通常通りスクロールが可能です。</li>
+                <li>キャンバス内でのみタッチイベントが制御されるため、意図しない描画を防ぎつつ、ユーザビリティを向上させています。</li>
                 <li>タッチデバイスでの使用感は、デバイスの性能やブラウザによって異なる場合があります。</li>
                 <li>スマートフォンやタブレットでも、色の選択やブラシサイズの変更、クリア機能が使用できます。</li>
             </ul>
             <p>スマートフォンでテストする際は、以下の点を確認してください：</p>
             <ul>
-                <li>指で滑らかに線が描けるか</li>
+                <li>キャンバス内で指で滑らかに線が描けるか</li>
+                <li>キャンバス外でページのスクロールが正常に機能するか</li>
                 <li>線の始点と終点が正確に反映されているか</li>
                 <li>複数の指で同時に描画しようとした場合、適切に処理されるか（最初のタッチポイントのみが反応するはずです）</li>
                 <li>画面の端まで正確に描画できるか</li>
