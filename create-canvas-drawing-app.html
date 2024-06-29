@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript ハンズオン: はじめてのお絵描きアプリ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        pre {
+            background-color: #f4f5f6;
+            padding: 1rem;
+            border-left: 0.3rem solid #9b4dca;
+            overflow-x: auto;
+        }
+
+        .demo-area {
+            background-color: #f4f5f6;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            margin-bottom: 2rem;
+            border: 1px solid #e1e1e1;
+            padding: 1rem;
+        }
+
+        .explanation {
+            background-color: #e1f5fe;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 0.3rem solid #03a9f4;
+        }
+
+        .main-title {
+            font-size: 3.6rem;
+            line-height: 1.2;
+            margin-bottom: 0;
+        }
+
+        .sub-title {
+            font-size: 2.4rem;
+            color: #606c76;
+            margin-top: 0.5rem;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+        }
+
+        h4 {
+            font-size: 1.6rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 1.6rem;
+            text-decoration: none;
+            color: #9b4dca;
+            margin-right: 1.5rem;
+        }
+
+        .github-link {
+            font-size: 1.6rem;
+            text-decoration: none;
+            color: #9b4dca;
+        }
+
+        #drawingCanvas,
+        #demo-drawingCanvas {
+            background-color: white;
+            border: 1px solid #ccc;
+            width: 100%;
+            height: auto;
+        }
+
+        .canvas-controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @media (max-width: 600px) {
+            .main-title {
+                font-size: 2.8rem;
+            }
+
+            .sub-title {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            h3 {
+                font-size: 1.6rem;
+            }
+
+            h4 {
+                font-size: 1.4rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-links {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">JavaScript ハンズオン</h1>
+            <div class="header-links">
+                <a href="index.html" class="nav-link">トップページ</a>
+                <a href="https://github.com/tomot7/javascript_handson" class="github-link" target="_blank">GitHub</a>
+            </div>
+        </div>
+        <h2 class="sub-title">はじめてのお絵描きアプリ</h2>
+
+        <section id="intro">
+            <h2>はじめに</h2>
+            <p>このハンズオンでは、JavaScriptとCanvas APIを使って簡単なお絵描きアプリを作ります。順番に進めていけば、プログラミングが初めての人でも、JavaScriptの基本とCanvas
+                APIの使い方を学びながら、実際に動くアプリを作ることができます。
+            </p>
+        </section>
+
+        <section id="setup">
+            <h2>準備</h2>
+            <p>まず、テキストエディタ（メモ帳、VSCode、Sublimeなど）を用意しましょう。新しいHTMLファイルを作って、以下の内容をコピーしてください。</p>
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;はじめてのお絵描きアプリ&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;はじめてのお絵描きアプリ&lt;/h1&gt;
+
+    &lt;script&gt;
+    // ここにJavaScriptのコードを書きます
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </section>
+
+        <section id="step1">
+            <h2>ステップ 1: キャンバスの準備</h2>
+            <p>まず、お絵描きのためのキャンバスを準備します。次のコードを<code>&lt;h1&gt;</code>タグの下に追加してください。</p>
+            <pre><code>&lt;canvas id="drawingCanvas" width="500" height="400" style="background-color: white;"&gt;&lt;/canvas&gt;
+&lt;br&gt;
+&lt;button id="clearButton"&gt;クリア&lt;/button&gt;
+&lt;input type="color" id="colorPicker" value="#000000"&gt;
+&lt;input type="range" id="brushSize" min="1" max="20" value="5"&gt;</code></pre>
+        </section>
+
+        <section id="step2">
+            <h2>ステップ 2: お絵描きの機能を作る</h2>
+            <p>次に、お絵描きの機能を作ります。以下のコードを<code>&lt;script&gt;</code>タグの中に書いてください。</p>
+            <pre><code>const canvas = document.getElementById('drawingCanvas');
+const ctx = canvas.getContext('2d');
+const clearButton = document.getElementById('clearButton');
+const colorPicker = document.getElementById('colorPicker');
+const brushSize = document.getElementById('brushSize');
+
+let isDrawing = false;
+
+function startDrawing(e) {
+    isDrawing = true;
+    draw(e);
+}
+
+function stopDrawing() {
+    isDrawing = false;
+    ctx.beginPath();
+}
+
+function draw(e) {
+    if (!isDrawing) return;
+
+    ctx.lineWidth = brushSize.value;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = colorPicker.value;
+
+    ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+}
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mouseout', stopDrawing);
+
+clearButton.addEventListener('click', clearCanvas);</code></pre>
+        </section>
+
+        <section id="step3">
+            <h2>ステップ 3: JavaScriptとCanvas APIの解説</h2>
+            <p>ステップ2で書いたJavaScriptのコードで使われている主な概念と Canvas API について説明します。</p>
+
+            <h3>1. Canvas の取得と 2D コンテキストの作成</h3>
+            <pre><code>const canvas = document.getElementById('drawingCanvas');
+const ctx = canvas.getContext('2d');</code></pre>
+            <p>HTMLのcanvas要素を取得し、2D描画コンテキストを作成します。このコンテキストを使って描画操作を行います。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/CanvasRenderingContext2D"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>2. イベントリスナーの追加</h3>
+            <pre><code>canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mouseout', stopDrawing);</code></pre>
+            <p>マウスの動きに応じて適切な関数を呼び出すようにイベントリスナーを設定します。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/EventTarget/addEventListener"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>3. 描画関数</h3>
+            <pre><code>function draw(e) {
+    if (!isDrawing) return;
+
+    ctx.lineWidth = brushSize.value;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = colorPicker.value;
+
+    ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+}</code></pre>
+            <p>マウスの現在位置に線を引く関数です。線の太さ、形状、色を設定し、<code>lineTo()</code>と<code>stroke()</code>メソッドで実際に描画を行います。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/CanvasRenderingContext2D/lineTo"
+                    target="_blank">もっと詳しく知る</a></p>
+
+            <h3>4. キャンバスのクリア</h3>
+            <pre><code>function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}</code></pre>
+            <p><code>clearRect()</code>メソッドを使って、キャンバス全体を消去します。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/CanvasRenderingContext2D/clearRect"
+                    target="_blank">もっと詳しく知る</a></p>
+        </section>
+
+        <section id="step4">
+            <h2>ステップ 4: 動作確認</h2>
+            <p>ここまでで、基本的なお絵描きアプリの機能が完成しました。HTMLファイルをブラウザで開いて、以下の点を確認しましょう：</p>
+            <ul>
+                <li>マウスをクリックしたままドラッグすると、線が描けるか</li>
+                <li>色を変更すると、描画される線の色が変わるか</li>
+                <li>ブラシサイズを変更すると、線の太さが変わるか</li>
+                <li>「クリア」ボタンをクリックすると、キャンバスがクリアされるか</li>
+            </ul>
+
+            <h3>完成したお絵描きアプリ</h3>
+            <p><strong>注意：</strong>このお絵描きアプリの見た目は、実行環境（ブラウザやCSSの設定）によって異なる場合があります。機能面での動作を中心に確認してください。</p>
+            <p>以下は、ここまでのステップで作成したお絵描きアプリの完成版です。自身で実装したものと比較してみましょう。</p>
+            <div class="demo-area">
+                <canvas id="demo-drawingCanvas"></canvas>
+                <div class="canvas-controls">
+                    <button id="demo-clearButton">クリア</button>
+                    <input type="color" id="demo-colorPicker" value="#000000">
+                    <input type="range" id="demo-brushSize" min="1" max="20" value="5">
+                </div>
+            </div>
+            <script>
+                const demoCanvas = document.getElementById('demo-drawingCanvas');
+                const demoCtx = demoCanvas.getContext('2d');
+                const demoClearButton = document.getElementById('demo-clearButton');
+                const demoColorPicker = document.getElementById('demo-colorPicker');
+                const demoBrushSize = document.getElementById('demo-brushSize');
+
+                function resizeDemoCanvas() {
+                    demoCanvas.width = demoCanvas.offsetWidth;
+                    demoCanvas.height = demoCanvas.offsetWidth * 0.6;
+                    demoClearCanvas();
+                }
+
+                window.addEventListener('load', resizeDemoCanvas);
+                window.addEventListener('resize', resizeDemoCanvas);
+
+                function demoClearCanvas() {
+                    demoCtx.fillStyle = 'white';
+                    demoCtx.fillRect(0, 0, demoCanvas.width, demoCanvas.height);
+                }
+
+                let demoIsDrawing = false;
+                let demoLastX = 0;
+                let demoLastY = 0;
+
+                function demoStartDrawing(e) {
+                    demoIsDrawing = true;
+                    [demoLastX, demoLastY] = getDemoMousePos(demoCanvas, e);
+                }
+
+                function demoStopDrawing() {
+                    demoIsDrawing = false;
+                }
+
+                function demoDraw(e) {
+                    if (!demoIsDrawing) return;
+
+                    demoCtx.beginPath();
+                    demoCtx.moveTo(demoLastX, demoLastY);
+                    [demoLastX, demoLastY] = getDemoMousePos(demoCanvas, e);
+                    demoCtx.lineTo(demoLastX, demoLastY);
+                    demoCtx.strokeStyle = demoColorPicker.value;
+                    demoCtx.lineWidth = demoBrushSize.value;
+                    demoCtx.lineCap = 'round';
+                    demoCtx.stroke();
+                }
+
+                function getDemoMousePos(canvas, e) {
+                    const rect = canvas.getBoundingClientRect();
+                    return [
+                        (e.clientX - rect.left) * (canvas.width / rect.width),
+                        (e.clientY - rect.top) * (canvas.height / rect.height)
+                    ];
+                }
+
+                demoCanvas.addEventListener('mousedown', demoStartDrawing);
+                demoCanvas.addEventListener('mousemove', demoDraw);
+                demoCanvas.addEventListener('mouseup', demoStopDrawing);
+                demoCanvas.addEventListener('mouseout', demoStopDrawing);
+
+                demoClearButton.addEventListener('click', demoClearCanvas);
+            </script>
+            <p>この完成版のお絵描きアプリを参考に、自身の実装を確認してください。正常に動作しない場合は、コードを見直し、必要に応じて修正を行ってください。</p>
+        </section>
+
+        <section id="challenge">
+            <h2>チャレンジ: もっと便利にしてみよう</h2>
+            <p>基本の機能ができたら、さらに便利な機能を追加してみましょう。例えば：</p>
+            <ol>
+                <li>
+                    <strong>図形描画ツール</strong>
+                    <p>円や四角形を描画できる機能を追加する</p>
+                    <pre><code>function drawCircle(x, y, radius) {
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+    ctx.stroke();
+}
+
+function drawRectangle(x, y, width, height) {
+    ctx.strokeRect(x, y, width, height);
+}</code></pre>
+                </li>
+                <li>
+                    <strong>保存機能</strong>
+                    <p>描いた絵をPNG形式で保存できる機能を追加する</p>
+                    <pre><code>function saveImage() {
+    const dataURL = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = 'my-drawing.png';
+    link.href = dataURL;
+    link.click();
+}</code></pre>
+                </li>
+                <li>
+                    <strong>アンドゥ機能</strong>
+                    <p>直前の描画を取り消せる機能を追加する</p>
+                </li>
+            </ol>
+            <p>これらの機能を追加するには、どうすればいいでしょうか？自分で考えて挑戦してみましょう。</p>
+        </section>
+
+        <section id="conclusion">
+            <h2>まとめ</h2>
+            <p>このハンズオンで、JavaScriptの基本とCanvas APIの使い方を学びながら、実際に動くお絵描きアプリを作りました。Canvas
+                APIを使うことで、ブラウザ上で様々な描画操作が可能になります。ここで学んだことを使って、もっと複雑なグラフィックアプリケーションを作る挑戦をしてみてください。
+            </p>
+        </section>
+    </div>
+</body>
+
+</html>
