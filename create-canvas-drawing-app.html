@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>JavaScript ハンズオン: はじめてのお絵描きアプリ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
     <link rel="icon" type="image/svg+xml"
@@ -11,6 +11,7 @@
     <style>
         body {
             padding: 20px;
+            touch-action: none;
         }
 
         .container {
@@ -98,6 +99,7 @@
             border: 1px solid #ccc;
             width: 100%;
             height: auto;
+            touch-action: none;
         }
 
         .canvas-controls {
@@ -165,6 +167,7 @@
 &lt;html lang="ja"&gt;
 &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;
     &lt;title&gt;はじめてのお絵描きアプリ&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -197,10 +200,12 @@ const colorPicker = document.getElementById('colorPicker');
 const brushSize = document.getElementById('brushSize');
 
 let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
 
 function startDrawing(e) {
     isDrawing = true;
-    draw(e);
+    [lastX, lastY] = getPointerPos(canvas, e);
 }
 
 function stopDrawing() {
@@ -211,18 +216,31 @@ function stopDrawing() {
 function draw(e) {
     if (!isDrawing) return;
 
+    const [x, y] = getPointerPos(canvas, e);
+
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = colorPicker.value;
     ctx.lineWidth = brushSize.value;
     ctx.lineCap = 'round';
-    ctx.strokeStyle = colorPicker.value;
-
-    ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
     ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+
+    [lastX, lastY] = [x, y];
+}
+
+function getPointerPos(canvas, e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (e.clientX || e.touches[0].clientX) - rect.left;
+    const y = (e.clientY || e.touches[0].clientY) - rect.top;
+    return [x * scaleX, y * scaleY];
 }
 
 function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 canvas.addEventListener('mousedown', startDrawing);
@@ -230,7 +248,30 @@ canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', stopDrawing);
 canvas.addEventListener('mouseout', stopDrawing);
 
-clearButton.addEventListener('click', clearCanvas);</code></pre>
+canvas.addEventListener('touchstart', handleStart);
+canvas.addEventListener('touchend', handleEnd);
+canvas.addEventListener('touchmove', handleMove);
+
+function handleStart(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    startDrawing(touch);
+}
+
+function handleEnd(e) {
+    e.preventDefault();
+    stopDrawing();
+}
+
+function handleMove(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    draw(touch);
+}
+
+clearButton.addEventListener('click', clearCanvas);
+
+window.addEventListener('load', clearCanvas);</code></pre>
         </section>
 
         <section id="step3">
@@ -248,8 +289,12 @@ const ctx = canvas.getContext('2d');</code></pre>
             <pre><code>canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', draw);
 canvas.addEventListener('mouseup', stopDrawing);
-canvas.addEventListener('mouseout', stopDrawing);</code></pre>
-            <p>マウスの動きに応じて適切な関数を呼び出すようにイベントリスナーを設定します。</p>
+canvas.addEventListener('mouseout', stopDrawing);
+
+canvas.addEventListener('touchstart', handleStart);
+canvas.addEventListener('touchend', handleEnd);
+canvas.addEventListener('touchmove', handleMove);</code></pre>
+            <p>マウスとタッチの動きに応じて適切な関数を呼び出すようにイベントリスナーを設定します。</p>
             <p><a href="https://developer.mozilla.org/ja/docs/Web/API/EventTarget/addEventListener"
                     target="_blank">もっと詳しく知る</a></p>
 
@@ -257,26 +302,54 @@ canvas.addEventListener('mouseout', stopDrawing);</code></pre>
             <pre><code>function draw(e) {
     if (!isDrawing) return;
 
+    const [x, y] = getPointerPos(canvas, e);
+
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = colorPicker.value;
     ctx.lineWidth = brushSize.value;
     ctx.lineCap = 'round';
-    ctx.strokeStyle = colorPicker.value;
-
-    ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
     ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+
+    [lastX, lastY] = [x, y];
 }</code></pre>
-            <p>マウスの現在位置に線を引く関数です。線の太さ、形状、色を設定し、<code>lineTo()</code>と<code>stroke()</code>メソッドで実際に描画を行います。</p>
+            <p>マウスまたはタッチの現在位置に線を引く関数です。線の太さ、形状、色を設定し、<code>lineTo()</code>と<code>stroke()</code>メソッドで実際に描画を行います。</p>
             <p><a href="https://developer.mozilla.org/ja/docs/Web/API/CanvasRenderingContext2D/lineTo"
                     target="_blank">もっと詳しく知る</a></p>
 
             <h3>4. キャンバスのクリア</h3>
             <pre><code>function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 }</code></pre>
-            <p><code>clearRect()</code>メソッドを使って、キャンバス全体を消去します。</p>
-            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/CanvasRenderingContext2D/clearRect"
+            <p><code>fillRect()</code>メソッドを使って、キャンバス全体を白色で塗りつぶします。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/CanvasRenderingContext2D/fillRect"
                     target="_blank">もっと詳しく知る</a></p>
+
+            <h3>5. タッチイベントの処理</h3>
+            <pre><code>canvas.addEventListener('touchstart', handleStart);
+                canvas.addEventListener('touchend', handleEnd);
+                canvas.addEventListener('touchmove', handleMove);
+
+                function handleStart(e) {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    startDrawing(touch);
+                }
+
+                function handleEnd(e) {
+                    e.preventDefault();
+                    stopDrawing();
+                }
+
+                function handleMove(e) {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    draw(touch);
+                }</code></pre>
+            <p>タッチデバイス（スマートフォンやタブレット）での描画をサポートするために、タッチイベントリスナーを追加しています。これにより、指で画面に触れて描画することができます。</p>
+            <p><a href="https://developer.mozilla.org/ja/docs/Web/API/Touch_events" target="_blank">もっと詳しく知る</a></p>
         </section>
 
         <section id="step4">
@@ -287,10 +360,13 @@ canvas.addEventListener('mouseout', stopDrawing);</code></pre>
                 <li>色を変更すると、描画される線の色が変わるか</li>
                 <li>ブラシサイズを変更すると、線の太さが変わるか</li>
                 <li>「クリア」ボタンをクリックすると、キャンバスがクリアされるか</li>
+                <li><strong>スマートフォンやタブレットで指でタッチしたまま動かすと、線が描けるか</strong></li>
+                <li><strong>スマートフォンやタブレットでも、色の変更やブラシサイズの調整、クリア機能が正しく動作するか</strong></li>
             </ul>
 
             <h3>完成したお絵描きアプリ</h3>
-            <p><strong>注意：</strong>このお絵描きアプリの見た目は、実行環境（ブラウザやCSSの設定）によって異なる場合があります。機能面での動作を中心に確認してください。</p>
+            <p><strong>注意：</strong>このお絵描きアプリの見た目は、実行環境（ブラウザやCSSの設定）によって異なる場合があります。機能面での動作を中心に確認してください。特に、スマートフォンやタブレットでの動作確認も忘れずに行ってください。
+            </p>
             <p>以下は、ここまでのステップで作成したお絵描きアプリの完成版です。自身で実装したものと比較してみましょう。</p>
             <div class="demo-area">
                 <canvas id="demo-drawingCanvas"></canvas>
@@ -307,6 +383,10 @@ canvas.addEventListener('mouseout', stopDrawing);</code></pre>
                 const demoColorPicker = document.getElementById('demo-colorPicker');
                 const demoBrushSize = document.getElementById('demo-brushSize');
 
+                let demoIsDrawing = false;
+                let demoLastX = 0;
+                let demoLastY = 0;
+
                 function resizeDemoCanvas() {
                     demoCanvas.width = demoCanvas.offsetWidth;
                     demoCanvas.height = demoCanvas.offsetWidth * 0.6;
@@ -321,13 +401,9 @@ canvas.addEventListener('mouseout', stopDrawing);</code></pre>
                     demoCtx.fillRect(0, 0, demoCanvas.width, demoCanvas.height);
                 }
 
-                let demoIsDrawing = false;
-                let demoLastX = 0;
-                let demoLastY = 0;
-
                 function demoStartDrawing(e) {
                     demoIsDrawing = true;
-                    [demoLastX, demoLastY] = getDemoMousePos(demoCanvas, e);
+                    [demoLastX, demoLastY] = getDemoPointerPos(demoCanvas, e);
                 }
 
                 function demoStopDrawing() {
@@ -337,22 +413,26 @@ canvas.addEventListener('mouseout', stopDrawing);</code></pre>
                 function demoDraw(e) {
                     if (!demoIsDrawing) return;
 
+                    const [x, y] = getDemoPointerPos(demoCanvas, e);
+
                     demoCtx.beginPath();
                     demoCtx.moveTo(demoLastX, demoLastY);
-                    [demoLastX, demoLastY] = getDemoMousePos(demoCanvas, e);
-                    demoCtx.lineTo(demoLastX, demoLastY);
+                    demoCtx.lineTo(x, y);
                     demoCtx.strokeStyle = demoColorPicker.value;
                     demoCtx.lineWidth = demoBrushSize.value;
                     demoCtx.lineCap = 'round';
                     demoCtx.stroke();
+
+                    [demoLastX, demoLastY] = [x, y];
                 }
 
-                function getDemoMousePos(canvas, e) {
+                function getDemoPointerPos(canvas, e) {
                     const rect = canvas.getBoundingClientRect();
-                    return [
-                        (e.clientX - rect.left) * (canvas.width / rect.width),
-                        (e.clientY - rect.top) * (canvas.height / rect.height)
-                    ];
+                    const scaleX = canvas.width / rect.width;
+                    const scaleY = canvas.height / rect.height;
+                    const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                    const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                    return [x * scaleX, y * scaleY];
                 }
 
                 demoCanvas.addEventListener('mousedown', demoStartDrawing);
@@ -360,9 +440,42 @@ canvas.addEventListener('mouseout', stopDrawing);</code></pre>
                 demoCanvas.addEventListener('mouseup', demoStopDrawing);
                 demoCanvas.addEventListener('mouseout', demoStopDrawing);
 
+                demoCanvas.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    demoStartDrawing(e.touches[0]);
+                });
+                demoCanvas.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    demoDraw(e.touches[0]);
+                });
+                demoCanvas.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    demoStopDrawing();
+                });
+
                 demoClearButton.addEventListener('click', demoClearCanvas);
             </script>
             <p>この完成版のお絵描きアプリを参考に、自身の実装を確認してください。正常に動作しない場合は、コードを見直し、必要に応じて修正を行ってください。</p>
+        </section>
+
+        <section id="smartphone-support">
+            <h3>スマートフォン対応について</h3>
+            <p>このお絵描きアプリは、マウスイベントだけでなくタッチイベントもサポートしているため、スマートフォンやタブレットでも使用できます。以下の点に注意してください：</p>
+            <ul>
+                <li>スマートフォンやタブレットでは、指でキャンバスに触れることで描画できます。</li>
+                <li>タッチ操作での描画は、マウス操作と同様に滑らかに行えるはずです。</li>
+                <li>ピンチズームが無効化されているため、描画中に画面が拡大縮小されることはありません。</li>
+                <li>タッチデバイスでの使用感は、デバイスの性能やブラウザによって異なる場合があります。</li>
+                <li>スマートフォンやタブレットでも、色の選択やブラシサイズの変更、クリア機能が使用できます。</li>
+            </ul>
+            <p>スマートフォンでテストする際は、以下の点を確認してください：</p>
+            <ul>
+                <li>指で滑らかに線が描けるか</li>
+                <li>線の始点と終点が正確に反映されているか</li>
+                <li>複数の指で同時に描画しようとした場合、適切に処理されるか（最初のタッチポイントのみが反応するはずです）</li>
+                <li>画面の端まで正確に描画できるか</li>
+            </ul>
+            <p>実際のデバイスで動作確認することで、よりユーザーフレンドリーなアプリケーションに改善できます。</p>
         </section>
 
         <section id="challenge">
@@ -404,7 +517,7 @@ function drawRectangle(x, y, width, height) {
         <section id="conclusion">
             <h2>まとめ</h2>
             <p>このハンズオンで、JavaScriptの基本とCanvas APIの使い方を学びながら、実際に動くお絵描きアプリを作りました。Canvas
-                APIを使うことで、ブラウザ上で様々な描画操作が可能になります。ここで学んだことを使って、もっと複雑なグラフィックアプリケーションを作る挑戦をしてみてください。
+                APIを使うことで、ブラウザ上で様々な描画操作が可能になります。さらに、タッチイベントをサポートすることで、スマートフォンやタブレットでも使えるアプリケーションを作成できました。ここで学んだことを使って、もっと複雑なグラフィックアプリケーションを作る挑戦をしてみてください。
             </p>
         </section>
     </div>
