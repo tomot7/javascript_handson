@@ -11,12 +11,13 @@
     <style>
         body {
             padding: 20px;
-            touch-action: none;
+            font-size: 16px;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
+            padding: 0 20px;
         }
 
         pre {
@@ -100,6 +101,7 @@
             width: 100%;
             height: auto;
             touch-action: none;
+            /* キャンバスにのみtouch-actionを適用 */
         }
 
         .canvas-controls {
@@ -110,6 +112,10 @@
         }
 
         @media (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+
             .main-title {
                 font-size: 2.8rem;
             }
@@ -253,7 +259,7 @@ canvas.addEventListener('touchend', handleEnd, { passive: true });
 canvas.addEventListener('touchmove', handleMove, { passive: false });
 
 function handleStart(e) {
-    e.preventDefault(); // キャンバス内でのみpreventDefaultを呼び出す
+    e.preventDefault();
     const touch = e.touches[0];
     startDrawing(touch);
 }
@@ -263,7 +269,7 @@ function handleEnd(e) {
 }
 
 function handleMove(e) {
-    e.preventDefault(); // キャンバス内でのみpreventDefaultを呼び出す
+    e.preventDefault();
     const touch = e.touches[0];
     draw(touch);
 }
