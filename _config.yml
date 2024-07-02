@@ -10,6 +10,10 @@ lang: ja
 timezone: Asia/Tokyo
 
 # プラグイン設定
-plugins:
+# plugins:
+#   - jekyll-seo-tag
+#   - jekyll-sitemap
+
+gems:
   - jekyll-seo-tag
   - jekyll-sitemap
