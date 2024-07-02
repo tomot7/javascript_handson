@@ -3,7 +3,7 @@ title: JavaScript ハンズオン
 description: 初心者のためのインタラクティブなJavaScript学習体験。電卓アプリ、ポモドーロタイマー、メモ帳アプリなどのハンズオンを通じて、JavaScriptの基本を学びます。
 url: https://tomot7.github.io/javascript_handson
 author: tomot7
-og_image: /assets/images/fabicon.svg
+og_image: /assets/images/ogpImage.png
 
 # 言語とタイムゾーン設定
 lang: ja
